@@ -26,3 +26,36 @@ def total_distance(solution, problem):
         total += distance
 
     return total
+
+def battery_constraint(solution, problem):
+    total_violation = 0.0
+
+    for task_index, robot_id in enumerate(solution):
+        robot = problem.robots[robot_id - 1]
+        task = problem.tasks[task_index]
+
+        violation = task.energy_required - robot.battery
+
+        if violation > 0:
+            total_violation += violation
+
+    return total_violation
+
+def total_battery_constraint(solution, problem):
+    total_violation = 0.0
+
+    for robot_index, robot in enumerate(problem.robots, start=1):
+
+        total_energy_required = 0.0
+
+        for task_index, robot_id in enumerate(solution):
+            if robot_id == robot_index:
+                task = problem.tasks[task_index]
+                total_energy_required += task.energy_required
+
+        violation = total_energy_required - robot.battery
+
+        if violation > 0:
+            total_violation += violation
+
+    return total_violation
