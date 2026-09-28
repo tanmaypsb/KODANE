@@ -1,6 +1,9 @@
 from kodane_library.core.problem import Problem
 from kodane_library.algorithms.pso import PSO
 from kodane_library.benchmarks.sphere import sphere
+from kodane_library.core.problem import Problem
+from kodane_library.core.robot import Robot
+from kodane_library.core.task import Task
 
 
 def shifted_sphere(solution, problem):
@@ -481,3 +484,36 @@ assert abs(
 )
 
 print("Fitness is consistent with the objective function.")
+
+
+robots = [
+    Robot(1, (0, 0), 100, 10),
+    Robot(2, (10, 0), 100, 10),
+    Robot(3, (0, 10), 100, 10),
+    Robot(4, (10, 10), 100, 10),
+    Robot(5, (5, 5), 100, 10)
+]
+
+tasks = [
+    Task(1, (1, 1), 10, 1),
+    Task(2, (8, 1), 10, 1),
+    Task(3, (2, 9), 10, 1),
+    Task(4, (9, 9), 10, 1)
+]
+
+problem = Problem(
+    robots=robots,
+    tasks=tasks,
+    objective=lambda solution, problem: 0,
+)
+
+optimizer = DiscretePSO(
+    problem,
+    population_size=5,
+    seed=42
+)
+
+optimizer.initialize()
+
+for particle in optimizer.particles:
+    print(particle["position"])
